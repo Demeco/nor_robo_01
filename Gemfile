@@ -6,4 +6,4 @@ gem 'twitter', '6.2.0'
 
 gem 'sqlite3'
 gem 'pg'
-gem 'active_record'
+gem 'activerecord'
