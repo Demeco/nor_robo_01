@@ -2,14 +2,16 @@
 
 require 'sinatra'
 require_relative 'tweet.rb'
+require_relative 'user.rb'
 
 # URL'/'でアクセス
 get '/' do
   'under construction'
 end
 
-# URL'/random_tweet'でアクセス
-get '/random_tweet' do
+# URL'/tester'でアクセス
+get '/tester' do
   #Tweet.new.random_tweet
-  'Closed.'
+  test = User.find('since_id')
+  '#{test.param}:#{test.value}'
 end
