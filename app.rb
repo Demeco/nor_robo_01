@@ -13,5 +13,5 @@ end
 get '/tester' do
   #Tweet.new.random_tweet
   test = Param.find('since_id')
-  test.param + ":" + test.value
+  test.param + ":" + test.value.to_s
 end
