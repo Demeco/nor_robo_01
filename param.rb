@@ -1,5 +1,5 @@
 require_relative 'db_setup'
 
 class Param < ActiveRecord::Base
-  selp.primary_key = :param
+  self.primary_key = :param
 end
