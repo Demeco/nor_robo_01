@@ -20,6 +20,7 @@ GEM
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
+    ffi (1.9.23)
     http (3.0.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -31,11 +32,14 @@ GEM
     http_parser.rb (0.6.0)
     i18n (1.0.0)
       concurrent-ruby (~> 1.0)
+    mecab (0.996)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     minitest (5.11.3)
     multipart-post (2.0.0)
     mustermann (1.0.2)
+    natto (1.1.1)
+      ffi (>= 1.9.0)
     naught (1.1.0)
     pg (1.0.0)
     public_suffix (3.0.2)
@@ -72,6 +76,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  mecab (= 0.996)
+  natto
   pg
   sinatra (= 2.0.1)
   twitter (= 6.2.0)
