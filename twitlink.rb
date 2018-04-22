@@ -202,3 +202,4 @@ while loop_minutes > 0
   proto.save()
   loop_minutes -= INTERVAL_SECOND
 end
+save('since_id',since_id)
