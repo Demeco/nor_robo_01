@@ -1,23 +1,23 @@
 # coding: utf-8
 #TwitterAPI経由でRubyからツイートするスクリプト
 
-#-----
-#基礎
-#-----
-#外部ライブラリ
-#Twitterライブラリを読込
+#= TwitterとNORの橋渡しをするクラス
+=begin
+Schedulerで実行するファイルでもある
+=end
+
 require 'twitter'
-#ハッシュをどうのこうするサブクラス使うためのrequire
 require 'active_support'
 require 'active_support/core_ext'
-#CSVライブラリ
 require 'csv'
-#自前のライブラリ
-#人工無能NORライブラリを読込
 require_relative 'nor.rb'
+require_relative 'param.rb'
 
-#since_idを有効にするモンキーパッチをあてる
-#使わせていただいてます https://qiita.com/riocampos/items/6999a52460dd7df941ea
+
+#== since_idを有効にするモンキーパッチ
+=begin
+使わせていただいてます https://qiita.com/riocampos/items/6999a52460dd7df941ea
+=end
 module Twitter
   class SearchResults
     def next_page
@@ -30,16 +30,30 @@ module Twitter
   end
 end
 
-#一部の変数
-#最低限の設定
-settings_hash = {user_id: nil,since_id: nil,consumer_key: nil,consumer_secret: nil,access_token: nil,access_token_secret: nil,greeting_in: '',greeting_out: ''}.with_indifferent_access
-#各種ファイルの場所
-PATH_SETTINGS = "public/twitter_settings.txt"
 PATH_LOGS = "public/twitter_log.csv"
+since_id = Param.find('since_id').value
 
-#-----
-#各種メソッド
-#-----
+#== 各種値をdatabaseから引っ張ってくる
+=begin
+key キーの名前(ex:since_id(String)
+value 値(Integer)
+=end
+def load(key)
+  if Param.find(key)
+    return Param.find(key).value
+  end
+end
+
+#== 各種値をdatabaseに保存する
+=begin
+key キーの名前(ex:since_id(String)
+value 値(Integer)
+=end
+def save(key,value)
+  if Param.find(key)
+    Param.find(key).update_attribute(:value,value)
+  end
+end
 
 #設定保存
 def save_setting(settings)
@@ -132,7 +146,7 @@ end
 log_csv = CSV.read(PATH_LOGS,headers: true,converters: :numeric,header_converters: :symbol)
 
 #クライアントを作成
-#twClientにキー情報を格納
+#セキュリティのため環境変数で設定してね
 twClient = Twitter::REST::Client.new do |config|
     config.consumer_key    = ENV['TWITTER_CONSUMER_KEY']
     config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
@@ -160,12 +174,15 @@ while true
   proto.save()
 end
 
-#定期的にリプを取得する
-while true
-  since_id = settings_hash['since_id'].to_i
-  if since_id <= 0
-    since_id = nil
-  end
+# 1回の実行につき継続して動かしたい時間の間だけループする
+loop_minutes = load('loop_minutes')*60
+# TwitterAPIの制限に引っかからない程度にツイートを取得する間隔(秒)
+INTERVAL_SECOND = 20
+since_id = load('since_id')
+if since_id <= 0
+  since_id = nil
+end
+while loop_minutes > 0
   replys_to_me = twClient.mentions_timeline(count: 100,since_id: since_id)
   replys_to_me.each do |reply|
     twitter_add_log(log_csv,reply)
@@ -181,6 +198,7 @@ while true
     save_setting(settings_hash)
     save_log(log_csv)
   end
-  sleep(20)
+  sleep(INTERVAL_SECOND)
   proto.save()
+  loop_minutes -= INTERVAL_SECOND
 end
