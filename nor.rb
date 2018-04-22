@@ -21,18 +21,24 @@ NORオブジェクト一つ＝人工無能一人格のイメージ
 class Nor
   def initialize(name)
     @name = name
-    @dic_meishi = Dictionary.new('dic/words_meishi.txt','＊名詞＊')
-    @dic_doushi = Dictionary.new('dic/words_doushi.txt','＊動詞＊')
-    @dic_fukushi = Dictionary.new('dic/words_fukushi.txt','＊副詞＊')
-    @dic_keiyoshi = Dictionary.new('dic/words_keiyoshi.txt','＊形容詞＊')
-    @dic_sentence = Dictionary.new('dic/sentence.txt','文構造辞書')
+    @dic_meishi = Dictionary.new(name + '/dic/words_meishi.txt','＊名詞＊')
+    @dic_doushi = Dictionary.new(name + '/dic/words_doushi.txt','＊動詞＊')
+    @dic_fukushi = Dictionary.new(name + '/dic/words_fukushi.txt','＊副詞＊')
+    @dic_keiyoshi = Dictionary.new(name + '/dic/words_keiyoshi.txt','＊形容詞＊')
+    @dic_sentence = Dictionary.new(name + '/dic/sentence.txt','文構造辞書')
     @dictionaries = [@dic_sentence,@dic_meishi,@dic_doushi,@dic_fukushi,@dic_keiyoshi]
     @responder = RoboticResponder.new('Robotic',@dictionaries)
     @analyzer = MecabAnalyzer.new('Mecab',@dictionaries)
   end
   
+  #== 入力された文章に対して返答を返す
   def dialogue(input)
     return @responder.response(input)
+  end
+  
+  #== 入力された文章を解析し辞書に追加する
+  def analyze(input)
+    @analyzer.analyze(input)
   end
     
   def responder_name
