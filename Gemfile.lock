@@ -36,23 +36,13 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     minitest (5.11.3)
     multipart-post (2.0.0)
-    mustermann (1.0.2)
     natto (1.1.1)
       ffi (>= 1.9.0)
     naught (1.1.0)
     pg (1.0.0)
     public_suffix (3.0.2)
-    rack (2.0.4)
-    rack-protection (2.0.1)
-      rack
     simple_oauth (0.3.1)
-    sinatra (2.0.1)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.1)
-      tilt (~> 2.0)
     thread_safe (0.3.6)
-    tilt (2.0.8)
     twitter (6.2.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -77,7 +67,6 @@ DEPENDENCIES
   activerecord
   natto
   pg
-  sinatra (= 2.0.1)
   twitter (= 6.2.0)
 
 RUBY VERSION
