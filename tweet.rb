@@ -101,7 +101,7 @@ if __FILE__ == $0
     replys_to_me = twClient.mentions_timeline(count: 100,since_id: since_id.to_i)
     replys_to_me.each do |reply|
       if reply.user.screen_name != user_id#セルフメンションは弾く
-        text = slice_mention(reply.full_text.dup,reply.user_mentions[0])
+        text = Tweet.slice_mention(reply.full_text.dup,reply.user_mentions[0])
         response = proto.dialogue(text)
         twClient.update('@' + reply.user.screen_name + ' '+ response,in_reply_to_status_id: reply.id)
         sleep(1)#あんまり一気に投稿すると弾かれるので休む
