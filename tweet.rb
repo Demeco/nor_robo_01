@@ -100,7 +100,6 @@ if __FILE__ == $0
   while loop_minutes > 0
     replys_to_me = twClient.mentions_timeline(count: 100,since_id: since_id.to_i)
     replys_to_me.each do |reply|
-      twitter_add_log(log_csv,reply)
       if reply.user.screen_name != user_id#セルフメンションは弾く
         text = slice_mention(reply.full_text.dup,reply.user_mentions[0])
         response = proto.dialogue(text)
@@ -112,7 +111,6 @@ if __FILE__ == $0
       since_id = replys_to_me[0].id.to_s#since_idを更新
     end
     sleep(INTERVAL_SECOND)
-    proto.save()
     loop_minutes -= INTERVAL_SECOND
   end
   Tweet.save('since_id',since_id)
