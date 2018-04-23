@@ -7,7 +7,7 @@
 Sampleもここで一緒に定義する
 =end
 
-require 'mecab'
+#require 'mecab'
 require 'natto'
 
 require_relative 'dictionary.rb'
