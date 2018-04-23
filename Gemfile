@@ -6,4 +6,5 @@ gem 'twitter', '6.2.0'
 gem 'pg'
 gem 'activerecord'
 
+gem 'mecab', '0.996'
 gem 'natto'
